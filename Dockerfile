@@ -26,8 +26,7 @@ MAINTAINER good.midget@gmail.com
 ENV DOCKER_ENG_VERSION 17.09.0~ce-0~ubuntu
 ENV KUBERNETES_CTL_VERSION v1.4.0
 
-USER root
-RUN groupadd docker && usermod -aG docker jenkins
+RUN touch /var/run/docker.sock && chown jenkins /var/run/docker.sock
 
 # RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
 #     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -40,7 +39,6 @@ RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && \
     apt-get -qy update && \
     apt-get -qy install xvfb google-chrome-stable
 
-USER jenkins
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
 ENTRYPOINT ["jenkins-slave"]
