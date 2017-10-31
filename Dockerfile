@@ -23,24 +23,16 @@
 FROM jenkinsci/slave
 MAINTAINER good.midget@gmail.com
 
-ENV DOCKER_ENG_VERSION 1.10.3-0~trusty
+ENV DOCKER_ENG_VERSION 17.09.0~ce-0~ubuntu
 ENV KUBERNETES_CTL_VERSION v1.4.0
 
 USER root
-RUN apt-key adv \
-      --keyserver hkp://ha.pool.sks-keyservers.net:80 \
-      --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
-    echo "deb http://apt.dockerproject.org/repo ubuntu-trusty main" | tee /etc/apt/sources.list.d/docker.list && \
-    . /etc/os-release && \
-    export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
-    echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get -qy update && \
-    apt-get -qy install build-essential cmake && \
-    apt-get -qy install docker-engine=${DOCKER_ENG_VERSION} && \
-    gpasswd -a jenkins docker
+RUN groupadd docker && usermod -aG docker jenkins
 
-RUN apt-get -qy install google-cloud-sdk kubectl
+# RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
+#     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+#     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+#     apt-get -qy install google-cloud-sdk kubectl
 
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && \
     apt-key add linux_signing_key.pub && \
