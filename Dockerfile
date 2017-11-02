@@ -23,24 +23,18 @@
 FROM jenkinsci/slave
 MAINTAINER good.midget@gmail.com
 
-ENV PYTHON_VERSION 3.6
-ENV KUBERNETES_CTL_VERSION v1.4.0
-
 USER root
+
+RUN apt-get -qy update && \
+    apt-get -qy install apt-utils \
+                        build-essential \
+                        python3 \
+                        xvfb
 
 # Docker
 RUN curl -fsSL get.docker.com -o get-docker.sh
 RUN sh get-docker.sh
 RUN gpasswd -a jenkins docker
-
-# Pyenv
-RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
-RUN echo 'export PATH="/home/jenkins/.pyenv/bin:$PATH"\n\
-    eval "$(pyenv init -)"\n\
-    eval "$(pyenv virtualenv-init -)"\n'\
->> /home/jenkins/.bashrc
-RUN . /home/jenkins/.bashrc
-RUN pyenv install 3.6.3
 
 # RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
 #     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -52,6 +46,9 @@ RUN pyenv install 3.6.3
 #     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list && \
 #     apt-get -qy update && \
 #     apt-get -qy install xvfb google-chrome-stable
+
+RUN apt-get -qy clean
+RUN rm -rf /var/lib/apt/lists/*
 
 USER jenkins
 COPY jenkins-slave /usr/local/bin/jenkins-slave
