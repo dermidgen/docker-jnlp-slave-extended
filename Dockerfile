@@ -35,6 +35,11 @@ RUN gpasswd -a jenkins docker
 
 # Pyenv
 RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+RUN echo 'export PATH="/home/jenkins/.pyenv/bin:$PATH"\n\
+    eval "$(pyenv init -)"\n\
+    eval "$(pyenv virtualenv-init -)"\n'\
+>> /home/jenkins/.bashrc
+RUN . /home/jenkins/.bashrc
 RUN pyenv install 3.6.3
 
 # RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
