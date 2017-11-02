@@ -23,13 +23,19 @@
 FROM jenkinsci/slave
 MAINTAINER good.midget@gmail.com
 
-ENV DOCKER_ENG_VERSION 17.09.0~ce-0~ubuntu
+ENV PYTHON_VERSION 3.6
 ENV KUBERNETES_CTL_VERSION v1.4.0
 
 USER root
+
+# Docker
 RUN curl -fsSL get.docker.com -o get-docker.sh
 RUN sh get-docker.sh
 RUN gpasswd -a jenkins docker
+
+# Pyenv
+RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+RUN pyenv install 3.6.3
 
 # RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
 #     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
