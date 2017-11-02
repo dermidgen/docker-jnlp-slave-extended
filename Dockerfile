@@ -29,6 +29,7 @@ RUN apt-get -qy update && \
     apt-get -qy install apt-utils \
                         build-essential \
                         python3 \
+                        python3-dev \
                         python3-venv \
                         xvfb
 
