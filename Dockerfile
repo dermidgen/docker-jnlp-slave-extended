@@ -31,6 +31,7 @@ RUN apt-get -qy update && \
                         python3 \
                         python3-dev \
                         python3-venv \
+                        libxss1 \
                         xvfb
 
 # Docker
