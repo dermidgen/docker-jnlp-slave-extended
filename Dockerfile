@@ -32,6 +32,7 @@ RUN apt-get -qy update && \
                         python3-dev \
                         python3-venv \
                         libxss1 \
+                        libgconf-2-4 \
                         xvfb
 
 # Docker
@@ -44,11 +45,11 @@ RUN gpasswd -a jenkins docker
 #     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
 #     apt-get -qy install google-cloud-sdk kubectl
 
-# RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && \
-#     apt-key add linux_signing_key.pub && \
-#     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list && \
-#     apt-get -qy update && \
-#     apt-get -qy install xvfb google-chrome-stable
+RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && \
+    apt-key add linux_signing_key.pub && \
+    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list && \
+    apt-get -qy update && \
+    apt-get -qy install google-chrome-stable
 
 RUN apt-get -qy clean
 RUN rm -rf /var/lib/apt/lists/*
