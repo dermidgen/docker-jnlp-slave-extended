@@ -33,7 +33,19 @@ RUN apt-get -qy update && \
                         python3-venv \
                         libxss1 \
                         libgconf-2-4 \
-                        xvfb
+                        xvfb \
+                        zlib1g-dev \
+                        libssl-dev \
+                        python-dev
+
+RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+RUN echo "export PATH=\"/home/jenkins/.pyenv/bin:\$PATH\"" >> /home/jenkins/.profile
+RUN echo "eval \"\$(pyenv init -)\"" >> /home/jenkins/.profile
+RUN echo "eval \"\$(pyenv virtualenv-init -)\"" >> /home/jenkins/.profile
+RUN export PATH="/home/jenkins/.pyenv/bin:$PATH" && \
+    eval "$(pyenv init -)" && \
+    eval "$(pyenv virtualenv-init -)" && \
+    pyenv install 3.6.2
 
 # Docker
 RUN curl -fsSL get.docker.com -o get-docker.sh
