@@ -39,13 +39,13 @@ RUN apt-get -qy update && \
                         python-dev
 
 RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
-RUN echo "export PATH=\"/home/jenkins/.pyenv/bin:\$PATH\"" >> /home/jenkins/.profile
-RUN echo "eval \"\$(pyenv init -)\"" >> /home/jenkins/.profile
-RUN echo "eval \"\$(pyenv virtualenv-init -)\"" >> /home/jenkins/.profile
-RUN export PATH="/home/jenkins/.pyenv/bin:$PATH" && \
+RUN mv /home/jenkins/.pyenv /usr/share/pyenv
+RUN ln -s /usr/share/pyenv/bin/pyenv /usr/bin/.
+RUN export PYENV_ROOT="/usr/share/pyenv" && \
     eval "$(pyenv init -)" && \
     eval "$(pyenv virtualenv-init -)" && \
-    pyenv install 3.6.2
+    pyenv install 3.6.2 && \
+    pyenv global 3.6.2
 
 # Docker
 RUN curl -fsSL get.docker.com -o get-docker.sh
