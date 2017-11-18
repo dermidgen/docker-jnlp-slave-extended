@@ -28,24 +28,31 @@ USER root
 RUN apt-get -qy update && \
     apt-get -qy install apt-utils \
                         build-essential \
+                        devscripts \
+                        python-dev \
                         python3 \
                         python3-dev \
                         python3-venv \
-                        libxss1 \
+                        libbz2-dev \
+                        libexpat1-dev \
                         libgconf-2-4 \
-                        xvfb \
-                        zlib1g-dev \
+                        liblzma-dev \
+                        libncurses5-dev \
+                        libncursesw5-dev \
+                        libreadline-dev \
                         libssl-dev \
-                        python-dev
+                        libsqlite3-dev \
+                        libxss1 \
+                        tk-dev \
+                        xvfb \
+                        zlib1g-dev
 
-RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
-RUN mv /home/jenkins/.pyenv /usr/share/pyenv
-RUN ln -s /usr/share/pyenv/bin/pyenv /usr/bin/.
-RUN export PYENV_ROOT="/usr/share/pyenv" && \
-    eval "$(pyenv init -)" && \
-    eval "$(pyenv virtualenv-init -)" && \
-    pyenv install 3.6.2 && \
-    pyenv global 3.6.2
+RUN wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz
+RUN tar xf Python-3.6.2.tar.xz && \
+    cd Python-3.6.2 && \
+    ./configure --enable-optimizations && \
+    make -j 8 && \
+    make altinstall
 
 # Docker
 RUN curl -fsSL get.docker.com -o get-docker.sh
