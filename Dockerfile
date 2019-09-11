@@ -52,11 +52,13 @@ RUN curl -fsSL get.docker.com -o get-docker.sh
 RUN sh get-docker.sh
 RUN gpasswd -a jenkins docker
 
-# RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
-#     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-#     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-#     apt-get -qy install google-cloud-sdk kubectl
-
+# kubectl
+RUN export CLOUD_SDK_REPO="cloud-sdk-jessie" && \
+    echo "deb http://packages.cloud.google.com/apt  $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    apt-get install apt-transport-https ca-certificates && \
+    apt-get update -y && apt-get install google-cloud-sdk -y && apt-get -qy install google-cloud-sdk kubectl
+    
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && \
     apt-key add linux_signing_key.pub && \
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list && \
